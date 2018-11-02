@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/user');
 
-const db = 'mongodb://taps:taps123@ds149593.mlab.com:49593/eventsdb'
+const db = 'mongodb://taps:taps123@ds149593.mlab.com:49593/eventsdb';
 
 // Connect to DB
 mongoose.connect(db, err => {
@@ -13,6 +13,29 @@ mongoose.connect(db, err => {
         console.log('Connected to mongodb.');
     }
 })
+
+// ========================
+// Mock test data
+
+let events = [];
+let special = [];
+
+for(let i=1; i<=10; i++){
+    events.push({
+       "_id": i,
+       "name": "Auto Expo " + i,
+       "description": "lorem ipsum",
+       "date": new Date(),
+    });
+
+    special.push({
+        "_id": i,
+        "name": "Auto Expo " + i,
+        "description": "lorem ipsum",
+        "date": new Date(),
+    });
+}
+
 
 // ========================
 // API Routes
@@ -58,6 +81,19 @@ router.post('/login', (req, res) => {
             }
         }
     });
+});
+
+// ====================================
+// Mock event APIS
+
+// Event get
+router.get('/events', (req, res) => {
+    res.json(events);
+});
+
+// Special get
+router.get('/special', (req, res) => {
+    res.json(special);
 });
 
 module.exports = router;
