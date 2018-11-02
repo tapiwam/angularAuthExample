@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/user');
+const EventData = require('../models/eventData');
 
 const db = 'mongodb://taps:taps123@ds149593.mlab.com:49593/eventsdb'
+let data = new EventData();
 
 // Connect to DB
 mongoose.connect(db, err => {
@@ -59,5 +61,15 @@ router.post('/login', (req, res) => {
         }
     });
 });
+
+router.get('/events', (req, res) => {
+    res.json(data.events);
+});
+
+router.get('/special', (req, res) => {
+    res.json(data.special);
+});
+
+
 
 module.exports = router;
