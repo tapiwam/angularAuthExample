@@ -17,6 +17,48 @@ mongoose.connect(db, err => {
 })
 
 // ========================
+
+function verifyToken(req, res, next){
+    if(!req.headers.authorization){
+        return res.status(401).send('Unauthorized  request.');
+    }
+    let token = req.headers.authorization.split(' ')[1];
+
+    if(!token || token === 'null'){
+        return res.status(401).send('Unauthorized  request.');
+    }
+    let payload = jwt.verify(token, 'secretKey');
+    if(!payload) {
+        return res.status(401).send('Unauthorized  request.');
+    }
+
+    validateUser(payload.subject);
+    req.userId = payload.subject;
+
+    // console.log('Passed token: ' + payload.subject);
+    next();
+}
+
+function validateUser(userId) {
+    console.log('Trying to validate user. @uid=' + userId);
+
+    User.findOne({"_id": userId}, (error, user) => {
+        if(error){
+            console.error('Failed to find user! ' + error);
+            return false;
+        } else {
+            if(!user) {
+                console.error('Invalid userId! ' + userId);
+                return false;
+            } else {
+                console.error('Valid userId! @userId=' + userId + " @email=" + user.email);
+                return true;
+            }
+        }
+    });
+}
+
+// ========================
 // Mock test data
 
 let events = [];
@@ -41,6 +83,10 @@ for(let i=1; i<=10; i++){
 
 // ========================
 // API Routes
+
+router.get('/user', (req, res) => {
+    res.send('Sent from API router');
+});
 
 // Test get
 router.get('/', (req, res) => {
@@ -101,7 +147,7 @@ router.get('/events', (req, res) => {
 });
 
 // Special get
-router.get('/special', (req, res) => {
+router.get('/special',verifyToken, (req, res) => {
     res.json(special);
 });
 
