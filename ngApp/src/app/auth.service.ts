@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {User} from './model/user';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ export class AuthService {
 
   private _baseUrl = "http://localhost:3000/api/";
   private _registerUrl = this.getUrl("register");
-  private _loginUrl = this.getUrl("loginUser");
+  private _loginUrl = this.getUrl("login");
 
   constructor(private http: HttpClient) { }
 
@@ -17,11 +18,11 @@ export class AuthService {
   }
 
   loginUser(user){
-    return this.http.post(this._loginUrl, user);
+    return this.http.post<User>(this._loginUrl, user);
   }
 
   registerUser(user){
-    return this.http.post(this._registerUrl, user);
+    return this.http.post<User>(this._registerUrl, user);
   }
 
   static validateUserData(userData: any): boolean{

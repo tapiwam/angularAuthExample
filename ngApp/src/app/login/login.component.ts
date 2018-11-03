@@ -21,8 +21,13 @@ export class LoginComponent implements OnInit {
     if(AuthService.validateUserData(this.userData)){
       this._auth.loginUser(this.userData)
         .subscribe(
-          res => console.log("SUCCESS" , res),
-          err => console.log("ERROR" , err)
+          res => {
+            console.log("SUCCESS" , res)
+          }
+          ,
+          err => {
+            console.log("ERROR" , err)
+          }
         );
     }
   }

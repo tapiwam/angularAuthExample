@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+
 const User = require('../models/user');
 
 const db = 'mongodb://taps:taps123@ds149593.mlab.com:49593/eventsdb';
@@ -53,13 +55,16 @@ router.post('/register', (req, res) => {
         if(error){
             console.error('Error registering ' + error);
         } else {
-            res.status(200).send(registeredUser);
+            let payload = { subject: registeredUser._id };
+            let token = jwt.sign(payload, 'secretKey');
+
+            res.status(200).send({token});
         }
     })
 });
 
 // Login
-router.post('/loginUser', (req, res) => {
+router.post('/login', (req, res) => {
     let userData = req.body;
 
     console.log('Searching for user...')
@@ -75,8 +80,12 @@ router.post('/loginUser', (req, res) => {
                     console.error('Invalid password! ' + userData.email);
                     res.status(401).send('Invalid credentials');
                 } else {
-                    console.info('Successful loginUser: ' + userData.email);
-                    res.status(200).send(user);
+                    console.info('Successful login: ' + userData.email);
+
+                    let payload = { subject: user._id };
+                    let token = jwt.sign(payload, 'secretKey');
+
+                    res.status(200).send({token});
                 }
             }
         }
