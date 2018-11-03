@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
     console.log('Trying to login user. ' + JSON.stringify(this.userData));
 
     if(AuthService.validateUserData(this.userData)){
-      this._auth.login(this.userData)
+      this._auth.loginUser(this.userData)
         .subscribe(
           res => console.log("SUCCESS" , res),
           err => console.log("ERROR" , err)

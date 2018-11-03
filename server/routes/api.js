@@ -59,7 +59,7 @@ router.post('/register', (req, res) => {
 });
 
 // Login
-router.post('/login', (req, res) => {
+router.post('/loginUser', (req, res) => {
     let userData = req.body;
 
     console.log('Searching for user...')
@@ -68,14 +68,14 @@ router.post('/login', (req, res) => {
             console.error('Failed to find user! ' + error);
         } else {
             if(!user) {
-                console.error('Invalid email trying to login! ' + userData.email);
+                console.error('Invalid email trying to loginUser! ' + userData.email);
                 res.status(401).send('Invalid credentials');
             } else {
                 if(user.password != userData.password){
                     console.error('Invalid password! ' + userData.email);
                     res.status(401).send('Invalid credentials');
                 } else {
-                    console.info('Successful login: ' + userData.email);
+                    console.info('Successful loginUser: ' + userData.email);
                     res.status(200).send(user);
                 }
             }
