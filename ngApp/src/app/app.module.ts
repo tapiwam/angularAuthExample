@@ -12,6 +12,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {AuthService} from './auth.service';
 import {EventService} from './event.service';
 import { EventCardComponent } from './event-card/event-card.component';
+import {AuthGuard} from './auth.guard';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { EventCardComponent } from './event-card/event-card.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [AuthService, EventService],
+  providers: [AuthService, EventService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

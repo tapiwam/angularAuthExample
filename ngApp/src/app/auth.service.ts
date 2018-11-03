@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {User} from './model/user';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,18 +11,27 @@ export class AuthService {
   private _registerUrl = this.getUrl("register");
   private _loginUrl = this.getUrl("login");
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private _router: Router) { }
 
   private getUrl(path: string): string {
     return this._baseUrl + path;
   }
 
   loginUser(user){
-    return this.http.post<User>(this._loginUrl, user);
+    return this.http.post<any>(this._loginUrl, user);
   }
 
   registerUser(user){
-    return this.http.post<User>(this._registerUrl, user);
+    return this.http.post<any>(this._registerUrl, user);
+  }
+
+  loggedIn(): boolean{
+    return !!(localStorage.getItem('token'));
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this._router.navigate(['events']);
   }
 
   static validateUserData(userData: any): boolean{
