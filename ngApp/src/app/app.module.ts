@@ -11,6 +11,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {AuthService} from './auth.service';
 import {EventService} from './event.service';
+import { EventCardComponent } from './event-card/event-card.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {EventService} from './event.service';
     RegisterComponent,
     LoginComponent,
     EventsComponent,
-    SpecialEventsComponent
+    SpecialEventsComponent,
+    EventCardComponent
   ],
   imports: [
     BrowserModule,
